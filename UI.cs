@@ -41,7 +41,7 @@ namespace ATM_UML_App
             // Changes text color to default color
             Console.ForegroundColor = defaultColor;
 
-            void printATMOptions()
+            int printATMOptions()
             {
                 int selectedIndex = 0;
                 bool selecting = true;
@@ -78,7 +78,7 @@ namespace ATM_UML_App
                     }
                     else if(keyInput.Key == ConsoleKey.Enter)
                     {
-                        return selectedIndex;
+                        selecting = false;
                     }
                         for (int index = 0; index < messages.Length; index++)
                         {
@@ -91,8 +91,8 @@ namespace ATM_UML_App
                                 Console.WriteLine(messages[index]);
                             }
                         }
-
                 }
+                return selectedIndex;
             }
             string getCardNumber()
             {
