@@ -45,28 +45,53 @@ namespace ATM_UML_App
             {
                 int selectedIndex = 0;
                 bool selecting = true;
-                string[] messages = ["Request Amount", "Dispense Cash", "Eject Card"];
+                string[] messages = ["1: Request Amount", "2: Dispense Cash", "3: Eject Card"];
+                for (int index = 0; index < messages.Length; index++)
+                {
+                    if (index == selectedIndex)
+                    {
+                        Console.WriteLine($"{messages[index]}\t<");
+                    }
+                    else
+                    {
+                        Console.WriteLine(messages[index]);
+                    }
+                }
                 while (selecting)
                 {
+                    var keyInput = Console.ReadKey();
                     Console.Clear();
 
-                    
-                    var keyInput = Console.ReadKey();
-
-                    if(keyInput.Key == ConsoleKey.UpArrow)
+                    if (keyInput.Key == ConsoleKey.UpArrow)
                     {
-                        if(selectedIndex -1 > 0)
+                        if (selectedIndex - 1 >= 0)
                         {
                             selectedIndex -= 1;
                         }
                     }
-                    else if(keyInput.Key == ConsoleKey.DownArrow)
+                    else if (keyInput.Key == ConsoleKey.DownArrow)
                     {
-                        if(selectedIndex +1 < 3)
+                        if (selectedIndex + 1 < 3)
                         {
                             selectedIndex += 1;
                         }
                     }
+                    else if(keyInput.Key == ConsoleKey.Enter)
+                    {
+                        return selectedIndex;
+                    }
+                        for (int index = 0; index < messages.Length; index++)
+                        {
+                            if (index == selectedIndex)
+                            {
+                                Console.WriteLine($"{messages[index]}\t<");
+                            }
+                            else
+                            {
+                                Console.WriteLine(messages[index]);
+                            }
+                        }
+
                 }
             }
             string getCardNumber()
