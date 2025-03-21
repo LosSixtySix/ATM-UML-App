@@ -11,7 +11,7 @@ public class BankServer {
 		return validCards.ContainsKey(cardNumber);
 	}
 
-	public bool verifyPin(string cardNumber, int pin) {
+	public bool verifyPIN(string cardNumber, int pin) {
 		(int pin, BankAccount account) card;
 		if (validCards.TryGetValue(cardNumber, out card))
 			return card.pin == pin;
