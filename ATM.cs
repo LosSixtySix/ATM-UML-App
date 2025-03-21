@@ -29,9 +29,9 @@ public class ATM
         if(bankServer.verifyPIN(currentCardNumber, pinInt))
         {
             pinValidated = true;
-            requestAmount();
             return true;
         }
+        Console.WriteLine("Your pin is invalid");
         ejectCard();
         return false;
     }
