@@ -2,6 +2,10 @@ public class BankAccount
 {
     private double _balance;
 
+    public BankAccount(double startingAmount)
+    {
+        _balance = startingAmount;
+    }
 
     public bool hasSufficientFunds(double amount)
     {
