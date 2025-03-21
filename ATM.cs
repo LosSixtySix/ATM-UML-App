@@ -64,8 +64,13 @@ public class ATM
         Console.WriteLine($"Your balance is {bankServer.checkBalance(currentCardNumber)}");
     }
 
-    public ATMAction(enum) getNextAction()
-    {
-
-    }
+        public ATMAction GetNextAction()
+        {
+            if (!cardInserted)
+                return ATMAction.InsertCard;
+            else if (!pinValidated)
+                return ATMAction.EnterPIN;
+            else
+                return ATMAction.DisplayOptions;
+        }
 }
