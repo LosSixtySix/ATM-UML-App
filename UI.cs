@@ -19,22 +19,41 @@ namespace ATM_UML_App
 
             // Changes text color to green
             Console.ForegroundColor = AtmLettersColor;
-
-            bool insertCard = false;
+            bool cardNotInserted = false;
             string? cardNumber = "";
             bool verified = false;
-
+            int selectedOption = 0;
             while (running)
             {
                 Console.Clear();
                 Console.WriteLine("Welcome to your ATM!");
-                if (insertCard)
+                if (cardNotInserted)
                 {
                     cardNumber = getCardNumber();
+                    atm.insertCard(cardNumber);
+                    verified = atm.enterPIN;
+                    cardNotInserted = false;
                 }
                 if (verified)
                 {
-                    printATMOptions();
+                    selectedOption = printATMOptions();
+                    verified = false;
+                }
+                if(verified == false && cardNotInserted == false)
+                {
+                    if(selectedOption == 0)
+                    {
+                        atm.requestAmount();
+                    }
+                    else if(selectedOption == 1)
+                    {
+                        atm.dispenseCash();
+                    }
+                    else if(selectedOption == 2)
+                    {
+                        atm.ejectCard();
+                        cardNotInserted = true;
+                    }
                 }
             }
 
