@@ -1,3 +1,5 @@
+using ATM_UML_App;
+
 public class ATM
 {
     private bool cardInserted;
@@ -5,20 +7,21 @@ public class ATM
     private BankServer bankServer;
     private string currentCardNumber;
 
-    public  ATM(BankServer server)
+    public ATM(BankServer server)
     {
         bankServer = server;
+        cardInserted = false;
+        pinValidated = false;
     }
 
     public void insertCard(string cardNumber)
     {
         cardInserted = true;
         currentCardNumber = cardNumber;
-        if(bankServer.verifyCard(cardNumber))
+        if (!bankServer.verifyCard(currentCardNumber))
         {
-            enterPIN();
+            ejectCard();
         }
-        ejectCard();
     }
 
     public bool enterPIN()
@@ -26,10 +29,9 @@ public class ATM
         Console.WriteLine("Please enter your pin");
         string pin = Console.ReadLine();
         int pinInt = Convert.ToInt32(pin);
-        if(bankServer.verifyPIN(currentCardNumber, pinInt))
+        if (bankServer.verifyPIN(currentCardNumber, pinInt))
         {
             pinValidated = true;
-            requestAmount();
             return true;
         }
         ejectCard();
@@ -41,7 +43,7 @@ public class ATM
         Console.WriteLine("Enter the amount you want to withdraw");
         string amount = Console.ReadLine();
         double amountDub = Convert.ToDouble(amount);
-        if(bankServer.processTransaction(currentCardNumber, amountDub))
+        if (bankServer.processTransaction(currentCardNumber, amountDub))
         {
             dispenseCash();
         }
@@ -64,13 +66,13 @@ public class ATM
         Console.WriteLine($"Your balance is {bankServer.checkBalance(currentCardNumber)}");
     }
 
-        public ATMAction GetNextAction()
-        {
-            if (!cardInserted)
-                return ATMAction.InsertCard;
-            else if (!pinValidated)
-                return ATMAction.EnterPIN;
-            else
-                return ATMAction.DisplayOptions;
-        }
+    public ATMAction GetNextAction()
+    {
+        if (!cardInserted)
+            return ATMAction.InsertCard;
+        else if (!pinValidated)
+            return ATMAction.EnterPIN;
+        else
+            return ATMAction.DisplayOptions;
+    }
 }

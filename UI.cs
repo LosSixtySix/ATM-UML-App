@@ -1,16 +1,22 @@
 ﻿
 
+using System.Threading.Tasks.Dataflow;
+
 namespace ATM_UML_App
 {
     class UI
     {
-        private ATM atm;
-        public UI(ATM atm)
+        // private ATM atm;
+        // public UI(ATM atm)
+        // {
+        //     this.atm = atm;
+        // }
+        static void Main()
         {
-            this.atm = atm;
-        }
-        static void main()
-        {
+            Dictionary<string, (int, BankAccount)> dict = new();
+            BankServer server = new(dict);
+            ATM atm = new(server);
+
             ConsoleColor AtmLettersColor = ConsoleColor.Green;
             ConsoleColor ErrorColor = ConsoleColor.Red;
             ConsoleColor defaultColor = Console.ForegroundColor;
@@ -19,19 +25,22 @@ namespace ATM_UML_App
 
             // Changes text color to green
             Console.ForegroundColor = AtmLettersColor;
-            bool cardNotInserted = false;
+            bool cardNotInserted = true;
             string? cardNumber = "";
             bool verified = false;
-            int selectedOption = 0;
+            int selectedOption = -1;
             while (running)
             {
-                Console.Clear();
-                Console.WriteLine("Welcome to your ATM!");
                 if (cardNotInserted)
                 {
+                    Console.Clear();
+                    Console.WriteLine("Welcome to your ATM!");
                     cardNumber = getCardNumber();
                     atm.insertCard(cardNumber);
-                    verified = atm.enterPIN;
+                    if (server.verifyCard(cardNumber))
+                    {
+                        verified = atm.enterPIN();
+                    }
                     cardNotInserted = false;
                 }
                 if (verified)
@@ -39,17 +48,17 @@ namespace ATM_UML_App
                     selectedOption = printATMOptions();
                     verified = false;
                 }
-                if(verified == false && cardNotInserted == false)
+                if (selectedOption != -1)
                 {
-                    if(selectedOption == 0)
+                    if (selectedOption == 0)
                     {
                         atm.requestAmount();
                     }
-                    else if(selectedOption == 1)
+                    else if (selectedOption == 1)
                     {
                         atm.dispenseCash();
                     }
-                    else if(selectedOption == 2)
+                    else if (selectedOption == 2)
                     {
                         atm.ejectCard();
                         cardNotInserted = true;
@@ -64,7 +73,7 @@ namespace ATM_UML_App
             {
                 int selectedIndex = 0;
                 bool selecting = true;
-                string[] messages = ["1: Request Amount", "2: Dispense Cash", "3: Eject Card"];
+                string[] messages = ["1: Request Amount", "2: Check Balance", "3: Eject Card"];
                 for (int index = 0; index < messages.Length; index++)
                 {
                     if (index == selectedIndex)
@@ -95,21 +104,21 @@ namespace ATM_UML_App
                             selectedIndex += 1;
                         }
                     }
-                    else if(keyInput.Key == ConsoleKey.Enter)
+                    else if (keyInput.Key == ConsoleKey.Enter)
                     {
                         selecting = false;
                     }
-                        for (int index = 0; index < messages.Length; index++)
+                    for (int index = 0; index < messages.Length; index++)
+                    {
+                        if (index == selectedIndex)
                         {
-                            if (index == selectedIndex)
-                            {
-                                Console.WriteLine($"{messages[index]}\t<");
-                            }
-                            else
-                            {
-                                Console.WriteLine(messages[index]);
-                            }
+                            Console.WriteLine($"{messages[index]}\t<");
                         }
+                        else
+                        {
+                            Console.WriteLine(messages[index]);
+                        }
+                    }
                 }
                 return selectedIndex;
             }
