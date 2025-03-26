@@ -34,6 +34,7 @@ public class ATM
             pinValidated = true;
             return true;
         }
+        Console.WriteLine("Your pin is invalid");
         ejectCard();
         return false;
     }
@@ -59,11 +60,14 @@ public class ATM
     public void ejectCard()
     {
         Console.WriteLine("Please take your card");
+        Console.WriteLine("Press any key to continue");
+        Console.ReadKey();
     }
 
     public void checkBalance()
     {
         Console.WriteLine($"Your balance is {bankServer.checkBalance(currentCardNumber)}");
+        ejectCard();
     }
 
     public ATMAction GetNextAction()

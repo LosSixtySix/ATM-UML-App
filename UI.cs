@@ -31,18 +31,15 @@ namespace ATM_UML_App
             int selectedOption = -1;
             while (running)
             {
-                if (cardNotInserted)
+                Console.Clear();
+                Console.WriteLine("Welcome to your ATM!");
+                cardNumber = getCardNumber();
+                atm.insertCard(cardNumber);
+                if (server.verifyCard(cardNumber))
                 {
-                    Console.Clear();
-                    Console.WriteLine("Welcome to your ATM!");
-                    cardNumber = getCardNumber();
-                    atm.insertCard(cardNumber);
-                    if (server.verifyCard(cardNumber))
-                    {
-                        verified = atm.enterPIN();
-                    }
-                    cardNotInserted = false;
+                    verified = atm.enterPIN();
                 }
+                cardNotInserted = false;
                 if (verified)
                 {
                     selectedOption = printATMOptions();
@@ -56,7 +53,7 @@ namespace ATM_UML_App
                     }
                     else if (selectedOption == 1)
                     {
-                        atm.dispenseCash();
+                        atm.checkBalance();
                     }
                     else if (selectedOption == 2)
                     {
