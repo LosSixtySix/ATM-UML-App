@@ -13,7 +13,7 @@ namespace ATM_UML_App
         // }
         static void Main()
         {
-            Dictionary<string, (int, BankAccount)> dict = new();
+            Dictionary<string, (int, BankAccount)> dict = new Dictionary<string, (int, BankAccount)> { { "1", (987654, new BankAccount(100000.0)) } };
             BankServer server = new(dict);
             ATM atm = new(server);
 
@@ -28,12 +28,13 @@ namespace ATM_UML_App
             bool cardNotInserted = true;
             string? cardNumber = "";
             bool verified = false;
-            int selectedOption = -1;
             while (running)
             {
+                int selectedOption = -1;
                 Console.Clear();
                 Console.WriteLine("Welcome to your ATM!");
                 cardNumber = getCardNumber();
+                // Console.WriteLine(server.verifyCard(cardNumber));
                 atm.insertCard(cardNumber);
                 if (server.verifyCard(cardNumber))
                 {

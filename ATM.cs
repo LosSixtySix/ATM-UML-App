@@ -54,7 +54,6 @@ public class ATM
     public void dispenseCash()
     {
         Console.WriteLine("Please take your cash");
-        ejectCard();
     }
 
     public void ejectCard()
